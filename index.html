@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CouponEngine · 优惠券规则引擎</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="wrap">
+  <h1>🎟️ 优惠券规则引擎</h1>
+  <p class="sub">创建优惠券 → 模拟购物车 → 自动匹配最优可用券 → 核销</p>
+
+  <div class="layout">
+    <!-- 创建优惠券 -->
+    <section class="card">
+      <h2>创建优惠券</h2>
+      <div class="grid2">
+        <label>券名称<input id="cName" value="新客立减券"></label>
+        <label>优惠码<input id="cCode" value="NEW50"></label>
+      </div>
+      <div class="grid2">
+        <label>类型
+          <select id="cType">
+            <option value="flat">满减券（满 X 减 Y）</option>
+            <option value="percent">折扣券（按比例，可设封顶）</option>
+            <option value="shipping">免运费券</option>
+          </select>
+        </label>
+        <label>发放数量<input id="cStock" type="number" value="100" min="1"></label>
+      </div>
+      <div class="grid2 cond-row">
+        <label>门槛金额 (¥)<input id="cMinSpend" type="number" value="200" min="0"></label>
+        <label id="flatValueRow">立减金额 (¥)<input id="cValue" type="number" value="50" min="1"></label>
+        <label id="percentValueRow" hidden>折扣（%）<input id="cPercent" type="number" value="20" min="1" max="90"></label>
+        <label id="capRow" hidden>封顶金额 (¥)<input id="cCap" type="number" value="80" min="1"></label>
+      </div>
+      <div class="grid2">
+        <label>生效日期<input id="cStart" type="date"></label>
+        <label>失效日期<input id="cEnd" type="date"></label>
+      </div>
+      <label>适用品类
+        <select id="cCategory">
+          <option value="">全部品类</option>
+          <option value="数码">仅数码</option>
+          <option value="家居">仅家居</option>
+          <option value="服饰">仅服饰</option>
+        </select>
+      </label>
+      <label class="check-row"><input id="cStackable" type="checkbox"> 允许与其他券叠加</label>
+      <button id="createBtn" class="primary-btn">＋ 创建优惠券</button>
+    </section>
+
+    <!-- 券列表 -->
+    <section class="card">
+      <h2>优惠券池（<span id="couponCount">0</span>）</h2>
+      <div id="couponList" class="coupon-list"></div>
+    </section>
+  </div>
+
+  <!-- 模拟结算 -->
+  <section class="card checkout-card">
+    <h2>模拟结算台</h2>
+    <div class="checkout-grid">
+      <div>
+        <h3>购物车商品</h3>
+        <div id="cartSim"></div>
+        <div class="ship-row">运费 <input id="shipFee" type="number" value="10" min="0"> 元</div>
+      </div>
+      <div class="apply-box">
+        <h3>用券</h3>
+        <div class="code-row">
+          <input id="redeemCode" placeholder="输入优惠码">
+          <button id="redeemBtn">使用</button>
+        </div>
+        <div id="appliedList"></div>
+        <div class="calc-rows" id="calcRows"></div>
+        <div class="grand-row"><span>应付</span><strong id="grandTotal">¥0.00</strong></div>
+        <p class="hint" id="engineMsg"></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
